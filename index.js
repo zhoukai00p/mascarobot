@@ -24,10 +24,13 @@ client.once('ready', () => {
 
 client.on('message', message => {
 
-    if (message.content === 'ciao') {
+    if ((message.content === 'ciao') || (message.content === 'Ciao') || (message.content === 'Ciao masca') || (message.content === 'Ciao Masca') || 
+    (message.content === 'ciao masca') || (messaage.content === 'ciao Masca') || (messaage.content === 'Ciao Mascaro') || (messaage.content === 'ciao Mascaro') || 
+    (messaage.content === 'ciao mascaro') || (messaage.content === 'Ciao mascaro'))
+    {
 
-       message.reply('Ciao!');
+       message.reply(' Ciao!');
 
-       }
+    }
 
 });
