@@ -1,16 +1,16 @@
 {
 
-    "name": "Example",
+    "name": "Mascaro BOT",
   
-    "description": "Example",
+    "description": "Il bot ufficiale del Sacro Ashigaru Impero",
   
     "version": "0.0.0",
   
-    "main": "bot.js",
+    "main": "index.js",
   
     "scripts": {
   
-      "start": "node bot.js"
+      "start": "node index.js"
   
     },
   
