@@ -25,8 +25,8 @@ client.once('ready', () => {
 client.on('message', message => {
 
     if ((message.content === 'ciao') || (message.content === 'Ciao') || (message.content === 'Ciao masca') || (message.content === 'Ciao Masca') || 
-    (message.content === 'ciao masca') || (messaage.content === 'ciao Masca') || (messaage.content === 'Ciao Mascaro') || (messaage.content === 'ciao Mascaro') || 
-    (messaage.content === 'ciao mascaro') || (messaage.content === 'Ciao mascaro'))
+    (message.content === 'ciao masca') || (message.content === 'ciao Masca') || (message.content === 'Ciao Mascaro') || (message.content === 'ciao Mascaro') || 
+    (message.content === 'ciao mascaro') || (message.content === 'Ciao mascaro'))
     {
 
        message.reply(' Ciao!');
