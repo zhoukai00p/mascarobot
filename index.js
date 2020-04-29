@@ -9,8 +9,6 @@ const prefix = process.env.prefix;
 
 const client = new Discord.Client();
 
-client.login(token).catch(err => console.log(err));
-
 client.once('ready', () => {
     console.log('Mascaro BOT online!');
    });
@@ -34,3 +32,5 @@ client.on('message', message => {
     }
 
 });
+
+client.login(token).catch(err => console.log(err));
