@@ -3,7 +3,8 @@ const ytdl = require('ytdl-core');
 const token = process.env.token;
 const prefix = process.env.prefix;
 const client = new Discord.Client();
-client.login(token);
+
+client.login(token).catch(err => console.log(err));
 
 client.once('ready', () => {
     console.log('Mascaro BOT online!');
