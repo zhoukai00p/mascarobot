@@ -25,7 +25,7 @@ client.once('disconnect', () => {
     console.log('Disconnetto!');
    });
 
-client.on('message', message => {
+client.on('message', async message => {
 
     var messaggioRisposta = message.content.toLocaleLowerCase();
 
