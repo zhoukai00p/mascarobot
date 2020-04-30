@@ -1,13 +1,15 @@
-const Discord = require('discord.js');
-/*const {
-	prefix,
-	token,
-} = require('./config.json');*/
-const ytdl = require('ytdl-core');
-const token = process.env.token;
-const prefix = process.env.prefix;
+require('dotenv').config();
+const { readdirSync } = require('fs');
+const { join } = require('path');
+const MusicClient = require('./struct/Client');
+const { Collection } = require('discord.js');
+const client = new MusicClient({ token: process.env.token, prefix: process.env.prefix });
 
-const client = new Discord.Client({ disableEveryone: true });
+const commandFiles = readdirSync(join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
+for (const file of commandFiles) {
+	const command = require(join(__dirname, 'commands', `${file}`));
+	client.commands.set(command.name, command);
+}
 
 client.on('warn', console.warn);
 
@@ -34,7 +36,41 @@ client.on('message', async message => {
        message.reply(' Ciao!');
     }
 
-    if(message.author.bot) 
+    if (!message.content.startsWith(client.config.prefix) || message.author.bot) return;
+	const args = message.content.slice(client.config.prefix.length).split(/ +/);
+	const commandName = args.shift().toLowerCase();
+	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
+	if (!command) return;
+	if (command.guildOnly && message.channel.type !== 'text') return message.reply('I can\'t execute that command inside DMs!');
+	if (command.args && !args.length) {
+		let reply = `You didn't provide any arguments, ${message.author}!`;
+		if (command.usage) reply += `\nThe proper usage would be: \`${client.config.prefix}${command.name} ${command.usage}\``;
+		return message.channel.send(reply);
+	}
+	if (!client.cooldowns.has(command.name)) {
+		client.cooldowns.set(command.name, new Collection());
+	}
+	const now = Date.now();
+	const timestamps = client.cooldowns.get(command.name);
+	const cooldownAmount = (command.cooldown || 3) * 1000;
+	if (timestamps.has(message.author.id)) {
+		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
+		if (now < expirationTime) {
+			const timeLeft = (expirationTime - now) / 1000;
+			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+		}
+	}
+	timestamps.set(message.author.id, now);
+	setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
+
+	try {
+		command.execute(message, args);
+	} catch (error) {
+		console.error(error);
+		message.reply('there was an error trying to execute that command!');
+	}
+
+    /*if(message.author.bot) 
     {
         return undefined;
     }
@@ -81,18 +117,34 @@ client.on('message', async message => {
             .on('error', error => {
                 console.error(error);
             });
-        dispatcher.setVolumeLogarithmic(5 / 5);
+        dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
     } else if (message.content.startsWith(prefix+'stop')){
-        if(!message.member.voiceChannel) 
+        if(!message.member.voice.channel) 
         {
             return message.channel.send('Tu non sei in una chat vocale!');
         }
-        message.member.voiceChannel.leave();
+        message.member.voice.channel.leave();
         return undefined;
     } else{
         console.log('errore!');
         console.log(prefix);
     }
+
+    if (message.content.startsWith(`${prefix}play`)) {
+        execute(message, serverQueue);
+        return;
+      } else if (message.content.startsWith(`${prefix}skip`)) {
+        skip(message, serverQueue);
+        return;
+      } else if (message.content.startsWith(`${prefix}stop`)) {
+        stop(message, serverQueue);
+        return;
+      } else {
+        message.channel.send("You need to enter a valid command!");
+    }*/
+
+
+
 });
 
-client.login(token);
+client.login(client.config.token);
