@@ -41,10 +41,10 @@ client.on('message', async message => {
 	const commandName = args.shift().toLowerCase();
 	const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 	if (!command) return;
-	if (command.guildOnly && message.channel.type !== 'text') return message.reply('I can\'t execute that command inside DMs!');
+	if (command.guildOnly && message.channel.type !== 'text') return message.reply('Non posso utilizzare il comando in chat privata!');
 	if (command.args && !args.length) {
-		let reply = `You didn't provide any arguments, ${message.author}!`;
-		if (command.usage) reply += `\nThe proper usage would be: \`${client.config.prefix}${command.name} ${command.usage}\``;
+		let reply = `Non hai dato nessun argomento, ${message.author}!`;
+		if (command.usage) reply += `\nIl corretto utilizzo del comando è: \`${client.config.prefix}${command.name} ${command.usage}\``;
 		return message.channel.send(reply);
 	}
 	if (!client.cooldowns.has(command.name)) {
@@ -57,7 +57,7 @@ client.on('message', async message => {
 		const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
-			return message.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+			return message.reply(`Ti prego aspetta ${timeLeft.toFixed(1)} secondi prima di riutilizzare questo comando: \`${command.name}\` .`);
 		}
 	}
 	timestamps.set(message.author.id, now);
@@ -67,7 +67,7 @@ client.on('message', async message => {
 		command.execute(message, args);
 	} catch (error) {
 		console.error(error);
-		message.reply('there was an error trying to execute that command!');
+		message.reply("C'è stato un errore a far partire questo comando!");
 	}
 
     /*if(message.author.bot) 
