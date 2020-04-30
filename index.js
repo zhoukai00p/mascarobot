@@ -55,7 +55,7 @@ client.on('message', async message => {
         {
             return message.channel.send('Mi dispiace ma devi essere in un canale vocale per ascolare la musica!');
         }
-        const permissions = voiceChannel.permissions(message.client.user);
+        const permissions = voiceChannel.permissionsFor(message.client.user);
         if (!permissions.has('CONNECT'))
         {
             return message.channel.send('Non riesco a connettermi alla chat vocale!');
