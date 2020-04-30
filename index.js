@@ -47,7 +47,7 @@ client.on('message', async message => {
 
     const args = message.content.split(' ');
 
-    if (message.content.startsWith('${prefix}play'))
+    if (message.content.startsWith(prefix+'play'))
     {
         console.log('sono entrato su play!');
         const voiceChannel = message.member.voiceChannel;
@@ -82,7 +82,7 @@ client.on('message', async message => {
                 console.error(error);
             });
         dispatcher.setVolumeLogarithmic(5 / 5);
-    } else if (message.content.startsWith('${prefix}stop')){
+    } else if (message.content.startsWith(prefix+'stop')){
         if(!message.member.voiceChannel) 
         {
             return message.channel.send('Tu non sei in una chat vocale!');
@@ -91,6 +91,7 @@ client.on('message', async message => {
         return undefined;
     } else{
         console.log('errore!');
+        console.log(prefix);
     }
 });
 
