@@ -89,6 +89,8 @@ client.on('message', async message => {
         }
         message.member.voiceChannel.leave();
         return undefined;
+    } else{
+        console.log('errore!');
     }
 });
 
