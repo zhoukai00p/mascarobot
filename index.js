@@ -50,7 +50,7 @@ client.on('message', async message => {
     if (message.content.startsWith(prefix+'play'))
     {
         console.log('sono entrato su play!');
-        const voiceChannel = message.member.voiceChannel;
+        const voiceChannel = message.member.voice.channel;
         if (!voiceChannel) 
         {
             return message.channel.send('Mi dispiace ma devi essere in un canale vocale per ascolare la musica!');
