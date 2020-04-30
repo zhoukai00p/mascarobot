@@ -44,23 +44,23 @@ client.on('message', async message => {
         return undefined;
     }
 
-    const messaggio = message.content.split(' ');
+    const args = message.content.split(' ');
 
-    if (messaggio.content.startsWith('${prefix}play'))
+    if (message.content.startsWith('${prefix}play'))
     {
-        const voiceChannel = messaggio.member.voiceChannel;
+        const voiceChannel = message.member.voiceChannel;
         if (!voiceChannel) 
         {
-            return messaggio.channel.send('Mi dispiace ma devi essere in un canale vocale per ascolare la musica!');
+            return message.channel.send('Mi dispiace ma devi essere in un canale vocale per ascolare la musica!');
         }
-        const permissions = voiceChannel.permissions(messaggio.client.user);
+        const permissions = voiceChannel.permissions(message.client.user);
         if (!permissions.has('CONNECT'))
         {
-            return messaggio.channel.send('Non riesco a connettermi alla chat vocale!');
+            return message.channel.send('Non riesco a connettermi alla chat vocale!');
         }
         if(!permissions.has('SPEAK'))
         {
-            return messaggio.channel.send('Non riesco a parlare in questa chat vocale!');
+            return message.channel.send('Non riesco a parlare in questa chat vocale!');
         }
 
         try 
@@ -68,7 +68,7 @@ client.on('message', async message => {
             var connection = await voiceChannel.join();
         } catch (error) {
             console.error('Non riesco ad entrare nella chat vocale: ${error}');
-            return messaggio.channel.send('Non riesco ad entrare nella chat vocale: ${error}');
+            return message.channel.send('Non riesco ad entrare nella chat vocale: ${error}');
         }
 
         const dispatcher = connection.playStream(ytdl(args[1]))
@@ -80,12 +80,12 @@ client.on('message', async message => {
                 console.error(error);
             });
         dispatcher.setVolumeLogarithmic(5 / 5);
-    } else if (messaggio.content.startsWith('${prefix}stop')){
-        if(!messaggio.member.voiceChannel) 
+    } else if (message.content.startsWith('${prefix}stop')){
+        if(!message.member.voiceChannel) 
         {
-            return messaggio.channel.send('Tu non sei in una chat vocale!');
+            return message.channel.send('Tu non sei in una chat vocale!');
         }
-        messaggio.member.voiceChannel.leave();
+        message.member.voiceChannel.leave();
         return undefined;
     }
 });
