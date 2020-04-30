@@ -41,6 +41,7 @@ client.on('message', async message => {
 
     if (!message.content.startsWith(prefix))
     {
+        console.log('sono entrato su prefix!');
         return undefined;
     }
 
