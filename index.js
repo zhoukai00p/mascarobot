@@ -48,6 +48,7 @@ client.on('message', async message => {
 
     if (message.content.startsWith('${prefix}play'))
     {
+        console.log('sono entrato su play!');
         const voiceChannel = message.member.voiceChannel;
         if (!voiceChannel) 
         {
